@@ -11,9 +11,11 @@ def log(filename, content):
         content += "\n"
         f.write(content)
 
-def print_model_parameters(model):
+def print_model_parameters(model, with_values=False):
     for name, param in model.named_parameters():
-        print(name, param)
+        print(name, param.shape)
+        if with_values:
+            print(param)
 
 def print_nonzeros(model):
     for name, p in model.named_parameters():
