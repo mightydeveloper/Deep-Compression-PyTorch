@@ -122,14 +122,14 @@ accuracy = test()
 util.log(args.log, f"initial_accuracy {accuracy}")
 torch.save(model, f"saves/initial_model.ptmodel")
 print("--- Before pruning ---")
-print_nonzeros(model)
+util.print_nonzeros(model)
 
 # Pruning
 model.prune_by_percentile()
 accuracy = test()
 util.log(args.log, f"accuracy_after_pruning {accuracy}")
 print("--- After pruning ---")
-print_nonzeros(model)
+util.print_nonzeros(model)
 
 # Retrain
 print("--- Retraining ---")
@@ -140,6 +140,6 @@ accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 
 print("--- After Retraining ---")
-print_nonzeros(model)
+util.print_nonzeros(model)
 
 
