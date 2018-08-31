@@ -1,4 +1,3 @@
-from __future__ import print_function
 import argparse
 import os
 
@@ -8,6 +7,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
+from tqdm import tqdm
 
 from net.models import LeNet
 import util
@@ -78,7 +78,8 @@ initial_optimizer_state_dict = optimizer.state_dict()
 def train(epochs):
     model.train()
     for epoch in range(epochs):
-        for batch_idx, (data, target) in enumerate(train_loader):
+        pbar = tqdm(enumerate(train_loader), total=len(train_loader))
+        for batch_idx, (data, target) in pbar:
             data, target = data.to(device), target.to(device)
             optimizer.zero_grad()
             output = model(data)
@@ -96,7 +97,7 @@ def train(epochs):
             if batch_idx % args.log_interval == 0:
                 done = batch_idx * len(data)
                 percentage = 100. * batch_idx / len(train_loader)
-                print(f'Train Epoch: {epoch} [{done:5}/{len(train_loader.dataset)} ({percentage:3.0f}%)]  Loss: {loss.item():.6f}')
+                pbar.set_description(f'Train Epoch: {epoch} [{done:5}/{len(train_loader.dataset)} ({percentage:3.0f}%)]  Loss: {loss.item():.6f}')
 
 
 def test():
