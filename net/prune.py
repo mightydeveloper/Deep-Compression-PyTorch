@@ -27,6 +27,7 @@ class PruningModule(Module):
 
         all_alives = np.concatenate(alive_parameters)
         percentile_value = np.percentile(abs(all_alives), q)
+        print(f'Pruning with threshold : {percentile_value}')
 
         # Prune the weights and mask
         # Note that module here is the layer
@@ -34,6 +35,18 @@ class PruningModule(Module):
         for name, module in self.named_modules():
             if name in ['fc1', 'fc2', 'fc3']:
                 module.prune(threshold=percentile_value)
+
+    def prune_by_std(self, s=1.0):
+        """
+        Note that `s` is a quality parameter / sensitivity value according to the paper.
+        According to Song Han's previous paper (Learning both Weights and Connections for Efficient Neural Networks),
+        'The pruning threshold is chosen as a quality parameter multiplied by the standard deviation of a layer’s weights'
+        """
+        for name, module in self.named_modules():
+            if name in ['fc1', 'fc2', 'fc3']:
+                threshold = np.std(module.weight.data.cpu().numpy()) * s
+                print(f'Pruning with threshold : {threshold} for layer {name}')
+                module.prune(threshold)
 
 
 class MaskedLinear(Module):

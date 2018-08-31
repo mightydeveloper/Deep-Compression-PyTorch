@@ -32,6 +32,8 @@ parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
 parser.add_argument('--log', type=str, default='log.txt',
                     help='log file name')
+parser.add_argument('--sensitivity', type=float, default=1.0,
+                    help="sensitivity value that is multiplied to layer's std in order to get threshold value")
 args = parser.parse_args()
 
 # Control Seed
@@ -64,7 +66,7 @@ test_loader = torch.utils.data.DataLoader(
 
 
 # Define which model to use
-model = LeNet().to(device)
+model = LeNet(mask=True).to(device)
 
 print(model)
 util.print_model_parameters(model)
@@ -125,7 +127,7 @@ print("--- Before pruning ---")
 util.print_nonzeros(model)
 
 # Pruning
-model.prune_by_percentile()
+model.prune_by_std(args.sensitivity)
 accuracy = test()
 util.log(args.log, f"accuracy_after_pruning {accuracy}")
 print("--- After pruning ---")
