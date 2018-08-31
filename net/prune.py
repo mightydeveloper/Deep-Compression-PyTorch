@@ -36,11 +36,14 @@ class PruningModule(Module):
             if name in ['fc1', 'fc2', 'fc3']:
                 module.prune(threshold=percentile_value)
 
-    def prune_by_std(self, s=1.0):
+    def prune_by_std(self, s=0.25):
         """
         Note that `s` is a quality parameter / sensitivity value according to the paper.
         According to Song Han's previous paper (Learning both Weights and Connections for Efficient Neural Networks),
         'The pruning threshold is chosen as a quality parameter multiplied by the standard deviation of a layer’s weights'
+
+        I tried multiple values and empirically, 0.25 matches the paper's compression rate and number of parameters.
+        Note : In the paper, the authors used different sensitivity values for different layers.
         """
         for name, module in self.named_modules():
             if name in ['fc1', 'fc2', 'fc3']:
