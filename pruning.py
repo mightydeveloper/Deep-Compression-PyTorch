@@ -30,8 +30,6 @@ parser.add_argument('--seed', type=int, default=42, metavar='S',
                     help='random seed (default: 42)')
 parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
-parser.add_argument('--iterations', type=int, default=100, metavar='N',
-                    help='how many iterations to prune and retrain')
 parser.add_argument('--log', type=str, default='log.txt',
                     help='log file name')
 args = parser.parse_args()
@@ -47,7 +45,7 @@ if use_cuda:
     torch.cuda.manual_seed(args.seed)
 
 # Loader
-kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
+kwargs = {'num_workers': 5, 'pin_memory': True} if use_cuda else {}
 train_loader = torch.utils.data.DataLoader(
     datasets.MNIST('../data', train=True, download=True,
                    transform=transforms.Compose([
@@ -60,7 +58,7 @@ test_loader = torch.utils.data.DataLoader(
                        transforms.ToTensor(),
                        transforms.Normalize((0.1307,), (0.3081,))
                    ])),
-    batch_size=args.test_batch_size, shuffle=True, **kwargs)
+    batch_size=args.test_batch_size, shuffle=False, **kwargs)
 
 
 # Define which model to use
