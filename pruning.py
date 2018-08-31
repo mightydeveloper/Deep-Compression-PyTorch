@@ -43,6 +43,8 @@ device = torch.device("cuda" if use_cuda else 'cpu')
 if use_cuda:
     print("Using CUDA!")
     torch.cuda.manual_seed(args.seed)
+else:
+    print('Not using CUDA!!!')
 
 # Loader
 kwargs = {'num_workers': 5, 'pin_memory': True} if use_cuda else {}
