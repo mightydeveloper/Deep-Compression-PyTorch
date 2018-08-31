@@ -42,7 +42,6 @@ torch.manual_seed(args.seed)
 # Select Device
 use_cuda = not args.no_cuda and torch.cuda.is_available()
 device = torch.device("cuda" if use_cuda else 'cpu')
-options = {'device': device}
 if use_cuda:
     print("Using CUDA!")
     torch.cuda.manual_seed(args.seed)
@@ -65,7 +64,7 @@ test_loader = torch.utils.data.DataLoader(
 
 
 # Define which model to use
-model = LeNet(**options).to(device)
+model = LeNet().to(device)
 
 print(model)
 util.print_model_parameters(model)
@@ -126,7 +125,7 @@ print("--- Before pruning ---")
 print_nonzeros(model)
 
 # Pruning
-model.prune_by_percentile(**options)
+model.prune_by_percentile()
 accuracy = test()
 util.log(args.log, f"accuracy_after_pruning {accuracy}")
 print("--- After pruning ---")

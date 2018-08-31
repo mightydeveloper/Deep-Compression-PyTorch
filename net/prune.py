@@ -33,7 +33,7 @@ class PruningModule(Module):
         # ex) fc1, fc2, fc3
         for name, module in self.named_modules():
             if name in ['fc1', 'fc2', 'fc3']:
-                module.prune(threshold=percentile_value, **kwargs)
+                module.prune(threshold=percentile_value)
 
 
 class MaskedLinear(Module):
@@ -59,7 +59,7 @@ class MaskedLinear(Module):
             It has the same shape as weight (out_features x in_features)
 
     """
-    def __init__(self, in_features, out_features, bias=True, **kwargs):
+    def __init__(self, in_features, out_features, bias=True):
         super(MaskedLinear, self).__init__()
         self.in_features = in_features
         self.out_features = out_features
@@ -87,14 +87,16 @@ class MaskedLinear(Module):
             + ', out_features=' + str(self.out_features) \
             + ', bias=' + str(self.bias is not None) + ')'
 
-    def prune(self, threshold, device='cpu', **kwargs):
+    def prune(self, threshold):
+        weight_dev = self.weight.device
+        mask_dev = self.mask.device
         # Convert Tensors to numpy and calculate
         tensor = self.weight.data.cpu().numpy()
         mask = self.mask.data.cpu().numpy()
         new_mask = np.where(abs(tensor) < threshold, 0.0, mask)
         # Apply new weight and mask
-        self.weight.data = torch.from_numpy(tensor * new_mask).to(device)
-        self.mask.data = torch.from_numpy(new_mask).to(device)
+        self.weight.data = torch.from_numpy(tensor * new_mask).to(weight_dev)
+        self.mask.data = torch.from_numpy(new_mask).to(mask_dev)
 
 
 
