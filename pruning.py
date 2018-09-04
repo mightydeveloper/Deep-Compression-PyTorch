@@ -10,6 +10,7 @@ from torchvision import datasets, transforms
 from tqdm import tqdm
 
 from net.models import LeNet
+from net.quantization import apply_weight_sharing
 import util
 
 os.makedirs('saves', exist_ok=True)
@@ -142,7 +143,11 @@ torch.save(model, f"saves/model_after_retraining.ptmodel")
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 
-print("--- After Retraining ---")
+print("--- After Retraining / Before quantization ---")
 util.print_nonzeros(model)
 
+# Quantization
+apply_weight_sharing(model)
+accuracy = test()
+util.log(args.log, f"accuracy_after_quantization {accuracy}")
 
