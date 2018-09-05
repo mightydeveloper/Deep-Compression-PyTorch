@@ -150,4 +150,5 @@ util.print_nonzeros(model)
 apply_weight_sharing(model)
 accuracy = test()
 util.log(args.log, f"accuracy_after_quantization {accuracy}")
+torch.save(model, f"saves/model_after_quantization.ptmodel")
 
