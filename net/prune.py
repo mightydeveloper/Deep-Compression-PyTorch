@@ -81,7 +81,7 @@ class MaskedLinear(Module):
         self.out_features = out_features
         self.weight = Parameter(torch.Tensor(out_features, in_features))
         # Initialize the mask with 1
-        self.mask = Parameter(torch.ones([out_features, in_features]))
+        self.mask = Parameter(torch.ones([out_features, in_features]), requires_grad=False)
         if bias:
             self.bias = Parameter(torch.Tensor(out_features))
         else:
@@ -109,7 +109,7 @@ class MaskedLinear(Module):
         # Convert Tensors to numpy and calculate
         tensor = self.weight.data.cpu().numpy()
         mask = self.mask.data.cpu().numpy()
-        new_mask = np.where(abs(tensor) < threshold, 0.0, mask)
+        new_mask = np.where(abs(tensor) < threshold, 0, mask)
         # Apply new weight and mask
         self.weight.data = torch.from_numpy(tensor * new_mask).to(weight_dev)
         self.mask.data = torch.from_numpy(new_mask).to(mask_dev)
