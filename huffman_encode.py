@@ -1,4 +1,5 @@
 import argparse
+
 import torch
 
 from net.huffmancoding import huffman_encode_model

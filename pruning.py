@@ -145,12 +145,5 @@ torch.save(model, f"saves/model_after_retraining.ptmodel")
 accuracy = test()
 util.log(args.log, f"accuracy_after_retraining {accuracy}")
 
-print("--- After Retraining / Before quantization ---")
+print("--- After Retraining ---")
 util.print_nonzeros(model)
-
-# Quantization
-apply_weight_sharing(model)
-accuracy = test()
-util.log(args.log, f"accuracy_after_quantization {accuracy}")
-torch.save(model, f"saves/model_after_quantization.ptmodel")
-
