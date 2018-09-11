@@ -17,13 +17,13 @@ Following packages are required for this project
 
 or just use docker
 ``` bash
-docker pull tonyapplekim/deepcompressionpytorch
+$ docker pull tonyapplekim/deepcompressionpytorch
 ```
 
 ## Usage
 ### pruning
 ``` bash
-python pruning.py --sensitivity 2
+$ python pruning.py
 ```
 This command
 - trains LeNet-300-100 model with MNIST dataset
@@ -42,7 +42,7 @@ For more, type `python pruning.py --help`
 
 ### weight sharing
 ``` bash
-python weight_share.py saves/model_after_retraining.ptmodel
+$ python weight_share.py saves/model_after_retraining.ptmodel
 ```
 This command
 * Applies K-means clustering algorithm for the data portion of CSC or CSR matrix representation for each weight
@@ -53,7 +53,7 @@ This command
 
 ### Huffman coding
 ``` bash
-python huffman_encode.py saves/model_after_weight_sharing.ptmodel
+$ python huffman_encode.py saves/model_after_weight_sharing.ptmodel
 ```
 This command
 - Applies Huffman coding algorithm for each of the weights in the network
