@@ -40,7 +40,7 @@ def test(model, use_cuda=True):
     kwargs = {'num_workers': 5, 'pin_memory': True} if use_cuda else {}
     device = torch.device("cuda" if use_cuda else 'cpu')
     test_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('../data', train=False, transform=transforms.Compose([
+    datasets.MNIST('data', train=False, transform=transforms.Compose([
                        transforms.ToTensor(),
                        transforms.Normalize((0.1307,), (0.3081,))
                    ])),
