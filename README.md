@@ -21,7 +21,7 @@ $ docker pull tonyapplekim/deepcompressionpytorch
 ```
 
 ## Usage
-### pruning
+### Pruning
 ``` bash
 $ python pruning.py
 ```
@@ -40,7 +40,7 @@ You can control other values such as
 - and others
 For more, type `python pruning.py --help`
 
-### weight sharing
+### Weight sharing
 ``` bash
 $ python weight_share.py saves/model_after_retraining.ptmodel
 ```
@@ -64,4 +64,6 @@ This command
 
 ## Note
 Note that I didn’t apply pruning nor weight sharing nor Huffman coding  for bias values. Maybe it’s better if I apply those to the biases as well, I haven’t try this out yet.
+
+Note that this work was done when I was employed at http://nota.ai
 
